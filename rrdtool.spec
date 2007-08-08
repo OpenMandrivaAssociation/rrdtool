@@ -24,7 +24,6 @@ BuildRequires:	chrpath
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	tcl tcl-devel
-BuildRequires:	ruby-devel
 BuildRequires:	groff
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -118,7 +117,7 @@ export CFLAGS="$OPT_FLAGS"
 %configure2_5x \
     --with-rrd-default-font=%{_datadir}/rrdtool/fonts/DejaVuSansMono-Roman.ttf \
     --with-perl-options="INSTALLDIRS=vendor" \
-    --enable-tcl-site
+    --enable-tcl-site --disable-ruby
 
 make
 
