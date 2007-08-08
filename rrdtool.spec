@@ -24,6 +24,8 @@ BuildRequires:	chrpath
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	tcl tcl-devel
+BuildRequires:	ruby-devel
+BuildRequires:	groff
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -107,7 +109,7 @@ perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 perl -pi -e 's|/lib\b|/%{_lib}|g' configure* Makefile.*
 
 %build
-libtoolize --copy --force && aclocal-1.7 && autoconf && automake-1.7 --add-missing
+libtoolize --copy --force && aclocal && autoconf && automake --add-missing
 
 #CFLAGS="$RPM_OPT_FLAGS" LIBS="-lm -lz -lpng"
 OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed -e "s/-ffast-math//"`
