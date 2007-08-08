@@ -155,6 +155,7 @@ cp doc/*.html installed_docs/html/
 %{__rm} -rf %{buildroot}%{_prefix}/lib/perl5/site_perl
 %{__rm} -rf %{buildroot}%{_prefix}/examples
 %{__rm} -rf %{buildroot}%{_prefix}/shared
+%{__rm} -rf %{buildroot}%{_datadir}/doc/%{name}*
 #%{__rm} -rf %{buildroot}%{_datadir}/rrdtool
 #%{__rm} -rf %{buildroot}%{_prefix}/shared/doc
 
@@ -221,7 +222,7 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %files -n python-%{name}
 %defattr (-,root,root)
 %doc bindings/python/AUTHORS bindings/python/COPYING bindings/python/README
-%py_platsitedir/*.so
+%py_platsitedir/*
 
 %files -n tcl-%{name}
 %defattr (-,root,root)
