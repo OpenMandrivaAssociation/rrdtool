@@ -1,10 +1,11 @@
 %define major 2
 %define libname %mklibname rrdtool %{major}
+%define develname %mklibname -d rrdtool
 %define oldlibname %mklibname rrdtool 0
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.2.18
+Version:	1.2.23
 Release:	%mkrel 1
 License:	GPL
 Group:		Networking/Other
@@ -20,8 +21,8 @@ BuildRequires:	freetype-devel
 BuildRequires:	libart_lgpl-devel
 BuildRequires:	python-devel
 BuildRequires:	chrpath
-BuildRequires:	autoconf2.5
-BuildRequires:	automake1.7
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	tcl tcl-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-root
 
@@ -45,9 +46,8 @@ RRD is the Acronym for Round Robin Database. RRD is a system to store and
 display time-series data (i.e. network bandwidth, machine-room temperature,
 server load average). This package allow you to use this library directly.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Development libraries and headers for %{libname}
-Version:	%{version}
 Group:		Development/Other
 Requires:	%{libname} = %{version}
 Requires:	libpng-devel >= 1.0.3
@@ -60,9 +60,10 @@ Requires:	libart_lgpl-devel
 Provides:	librrdtool-devel
 Obsoletes:	rrdtool-devel
 Obsoletes:	%{oldlibname}-devel
-Provides:	rrdtool-devel
+Obsoletes:	%{libname}-devel
+Provides:	rrdtool-devel = %{version}-%{release}
 
-%description -n	%{libname}-devel
+%description -n	%{develname}
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
 display time-series data (i.e. network bandwidth, machine-room temperature,
 server load average).
@@ -193,10 +194,10 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %files -n %{libname}
 %defattr(-,root,root)
 %doc COPYING
-%{_libdir}/librrd.so.*
+%{_libdir}/librrd.so.%{major}*
 %{_libdir}/librrd_th.so.*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %doc COPYING
 %exclude %{_libdir}/tclrrd%{version}.so
@@ -226,5 +227,3 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*
 %{_libdir}/tclrrd%{version}.so
-
-
