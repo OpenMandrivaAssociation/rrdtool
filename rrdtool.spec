@@ -5,12 +5,12 @@
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.2.23
-Release:	%mkrel 4
+Version:	1.2.26
+Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
-URL:		http://ee-staff.ethz.ch/~oetiker/webtools/rrdtool/
-Source:		http://ee-staff.ethz.ch/~oetiker/webtools/rrdtool/pub/%{name}-%{version}.tar.bz2
+URL:		http://oss.oetiker.ch/rrdtool/
+Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Patch0:		rrdtool-1.2.12-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 BuildRequires:	png-devel >= 1.0.3
@@ -108,11 +108,6 @@ perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 
 %build
 autoreconf
-
-#CFLAGS="$RPM_OPT_FLAGS" LIBS="-lm -lz -lpng"
-OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed -e "s/-ffast-math//"`
-export CFLAGS="$OPT_FLAGS"
-
 %configure2_5x \
     --with-rrd-default-font=%{_datadir}/rrdtool/fonts/DejaVuSansMono-Roman.ttf \
     --with-perl-options="INSTALLDIRS=vendor" \
