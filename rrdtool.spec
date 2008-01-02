@@ -26,6 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	tcl tcl-devel
 BuildRequires:	groff
+Buildroot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
