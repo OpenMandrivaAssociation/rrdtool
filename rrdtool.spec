@@ -5,8 +5,8 @@
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.2.26
-Release:	%mkrel 2
+Version:	1.2.27
+Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
