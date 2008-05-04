@@ -6,7 +6,7 @@
 Summary:	RRDTool - round robin database
 Name:		rrdtool
 Version:	1.2.27
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -26,7 +26,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	tcl tcl-devel
 BuildRequires:	groff
-Buildroot:	%{_tmppath}/%{name}-%{version}-root
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
