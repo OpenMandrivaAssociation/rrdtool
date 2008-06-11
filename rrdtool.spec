@@ -5,8 +5,8 @@
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.2.27
-Release:	%mkrel 2
+Version:	1.3.0
+Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -14,11 +14,8 @@ Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Patch0:		rrdtool-1.2.12-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
-Patch3:		rrdtool-implicit-decl-fix.diff
 Patch4:		rrdtool-setup.py-module-name.diff
-Patch5:		rrdtool-typos.diff
 Patch6:		rrdtool-no-rpath.diff
-Patch7:		rrdtool-autoconf262.diff
 BuildRequires:	png-devel >= 1.0.3
 BuildRequires:	perl-devel
 BuildRequires:	libgd-devel
@@ -109,17 +106,15 @@ The RRD Tools TCL modules.
 %patch0 -p1 -b .pic
 %patch1 -p1
 %patch2 -p0
-%patch3 -p1
 %patch4 -p0
-%patch5 -p1
 %patch6 -p1
-%patch7 -p0
 
 # annoyance be gone
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 
 %build
 autoreconf
+
 %configure2_5x \
     --with-rrd-default-font=%{_datadir}/rrdtool/fonts/DejaVuSansMono-Roman.ttf \
     --with-perl-options="INSTALLDIRS=vendor" \
