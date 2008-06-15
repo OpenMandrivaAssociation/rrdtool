@@ -1,7 +1,6 @@
-%define major 2
+%define major 4
 %define libname %mklibname rrdtool %{major}
 %define develname %mklibname -d rrdtool
-%define oldlibname %mklibname rrdtool 0
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
@@ -16,19 +15,21 @@ Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
 Patch4:		rrdtool-setup.py-module-name.diff
 Patch6:		rrdtool-no-rpath.diff
-BuildRequires:	png-devel >= 1.0.3
-BuildRequires:	perl-devel
-BuildRequires:	libgd-devel
-BuildRequires:	zlib-devel
-BuildRequires:	cgilib-devel
-BuildRequires:	freetype-devel
-BuildRequires:	libart_lgpl-devel
-BuildRequires:	python-devel
-BuildRequires:	chrpath
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	tcl tcl-devel
+BuildRequires:	cgilib-devel
+BuildRequires:	chrpath
+BuildRequires:	freetype-devel
+BuildRequires:	gettext-devel
 BuildRequires:	groff
+BuildRequires:	intltool >= 0.35.0
+BuildRequires:	libart_lgpl-devel
+BuildRequires:	libgd-devel
+BuildRequires:	perl-devel
+BuildRequires:	png-devel >= 1.0.3
+BuildRequires:	python-devel
+BuildRequires:	tcl tcl-devel
+BuildRequires:	zlib-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -44,7 +45,6 @@ put a friendly user interface on it.
 Summary:	RRDTool - round robin database shared libraries
 Version:	%{version}
 Group:		System/Libraries
-Obsoletes:	%{oldlibname}
 
 %description -n	%{libname}
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
@@ -62,11 +62,11 @@ Requires:	zlib-devel
 Requires:	cgilib-devel
 Requires:	freetype-devel
 Requires:	libart_lgpl-devel
-Provides:	librrdtool-devel
-Obsoletes:	rrdtool-devel
-Obsoletes:	%{oldlibname}-devel
-Obsoletes:	%{libname}-devel
 Provides:	rrdtool-devel = %{version}-%{release}
+Provides:	librrdtool-devel = %{version}-%{release}
+Obsoletes:	rrdtool-devel
+Conflicts:	%{mklibname rrdtool 0 -d}
+Conflicts:	%{mklibname rrdtool 2 -d}
 
 %description -n	%{develname}
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
@@ -116,14 +116,13 @@ perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 autoreconf
 
 %configure2_5x \
-    --with-rrd-default-font=%{_datadir}/rrdtool/fonts/DejaVuSansMono-Roman.ttf \
     --with-perl-options="INSTALLDIRS=vendor" \
     --enable-tcl-site --disable-ruby
 
 make
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %makeinstall_std
 
@@ -152,8 +151,6 @@ cp examples/*.{cgi,pl} installed_docs/examples/
 %{__rm} -rf %{buildroot}%{_prefix}/lib/perl5/site_perl
 %{__rm} -rf %{buildroot}%{_prefix}/shared
 %{__rm} -rf %{buildroot}%{_datadir}/doc/%{name}*
-#%{__rm} -rf %{buildroot}%{_datadir}/rrdtool
-#%{__rm} -rf %{buildroot}%{_prefix}/shared/doc
 
 # icky ntmake.pl
 %{__rm} -f %{buildroot}%{perl_vendorarch}/ntmake.pl
@@ -173,9 +170,6 @@ chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so
 find %{buildroot} -name "*.in" | xargs %{__rm} -f
 find %{buildroot} -name "*.am" | xargs %{__rm} -f
 
-%clean
-%{__rm} -rf %{buildroot}
-
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
 %endif
@@ -184,6 +178,9 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
+%clean
+rm -rf %{buildroot}
+
 %files
 %defattr(-,root,root)
 %doc CONTRIBUTORS COPYING COPYRIGHT NEWS README THREADS TODO
@@ -191,7 +188,6 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %{_bindir}/rrdcgi
 %{_bindir}/rrdtool
 %{_bindir}/rrdupdate
-%{_datadir}/rrdtool
 %{_mandir}/man1/*
 
 %files -n %{libname}
