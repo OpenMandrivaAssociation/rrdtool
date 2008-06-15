@@ -13,13 +13,16 @@ Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Patch0:		rrdtool-1.2.12-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
+Patch3:		rrdtool-autoconf262.diff
 Patch4:		rrdtool-setup.py-module-name.diff
 Patch6:		rrdtool-no-rpath.diff
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	cairo-devel
 BuildRequires:	cgilib-devel
 BuildRequires:	chrpath
 BuildRequires:	freetype-devel
+BuildRequires:	gettext
 BuildRequires:	gettext-devel
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
@@ -106,6 +109,7 @@ The RRD Tools TCL modules.
 %patch0 -p1 -b .pic
 %patch1 -p1
 %patch2 -p0
+%patch3 -p0
 %patch4 -p0
 %patch6 -p1
 
