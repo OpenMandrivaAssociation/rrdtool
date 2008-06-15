@@ -24,6 +24,7 @@ BuildRequires:	chrpath
 BuildRequires:	freetype-devel
 BuildRequires:	gettext
 BuildRequires:	gettext-devel
+BuildRequires:	glib2-devel
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libart_lgpl-devel
