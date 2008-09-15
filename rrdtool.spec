@@ -4,7 +4,7 @@
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.3.1
+Version:	1.3.3
 Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
@@ -13,7 +13,6 @@ Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Patch0:		rrdtool-1.2.12-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
-Patch3:		rrdtool-autoconf262.diff
 Patch4:		rrdtool-setup.py-module-name.diff
 Patch6:		rrdtool-no-rpath.diff
 BuildRequires:	autoconf
@@ -111,7 +110,6 @@ The RRD Tools TCL modules.
 %patch0 -p1 -b .pic
 %patch1 -p1
 %patch2 -p0
-%patch3 -p0
 %patch4 -p0
 %patch6 -p1
 
