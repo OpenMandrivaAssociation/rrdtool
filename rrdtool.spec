@@ -4,7 +4,7 @@
 
 Summary:	RRDTool - round robin database
 Name:		rrdtool
-Version:	1.3.3
+Version:	1.3.4
 Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
@@ -208,6 +208,7 @@ rm -rf %{buildroot}
 %{_libdir}/*.a
 %{_libdir}/*.la
 %{_includedir}/*.h
+%{_libdir}/pkgconfig/librrd.pc
 
 %files -n perl-%{name}
 %defattr (-,root,root)
