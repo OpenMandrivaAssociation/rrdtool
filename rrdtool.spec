@@ -5,7 +5,7 @@
 Summary:	RRDTool - round robin database
 Name:		rrdtool
 Version:	1.3.4
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -15,6 +15,12 @@ Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
 Patch4:		rrdtool-setup.py-module-name.diff
 Patch6:		rrdtool-no-rpath.diff
+# Install tcl bindings to correct location as per policy (the upstream
+# conditional that should nearly do this doesn't work) - AdamW 2008/12
+Patch7:		rrdtool-1.3.4-tcl_location.patch
+# Relax version requirement for Tcl, it breaks if you're using a
+# pre-release - AdamW 2008/12
+Patch8:		rrdtool-1.3.4-tcl_require.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	cairo-devel
@@ -112,6 +118,8 @@ The RRD Tools TCL modules.
 %patch2 -p0
 %patch4 -p0
 %patch6 -p1
+%patch7 -p1 -b .tcl_location
+%patch8 -p1 -b .tcl_require
 
 # annoyance be gone
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
@@ -228,6 +236,5 @@ rm -rf %{buildroot}
 %files -n tcl-%{name}
 %defattr (-,root,root)
 %doc bindings/tcl/README
-%dir %{_libdir}/%{name}
-%{_libdir}/%{name}/*
+%{tcl_sitearch}/tclrrd
 %{_libdir}/tclrrd%{version}.so
