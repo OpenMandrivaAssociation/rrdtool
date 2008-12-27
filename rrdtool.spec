@@ -10,7 +10,7 @@ License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
 Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
-Patch0:		rrdtool-1.2.12-pic.diff
+Patch0:		rrdtool-1.3.4-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
 Patch4:		rrdtool-setup.py-module-name.diff
