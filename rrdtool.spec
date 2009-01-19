@@ -2,10 +2,10 @@
 %define libname %mklibname rrdtool %{major}
 %define develname %mklibname -d rrdtool
 
-Summary:	RRDTool - round robin database
+Summary:	Round Robin Database tool
 Name:		rrdtool
-Version:	1.3.4
-Release:	%mkrel 4
+Version:	1.3.6
+Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -14,7 +14,7 @@ Patch0:		rrdtool-1.3.4-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
 Patch4:		rrdtool-setup.py-module-name.diff
-Patch6:		rrdtool-no-rpath.diff
+Patch6:		rrdtool-1.3.6-no-rpath.patch
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch7:		rrdtool-1.3.4-tcl_location.patch
