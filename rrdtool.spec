@@ -4,7 +4,7 @@
 
 Summary:	Round Robin Database tool
 Name:		rrdtool
-Version:	1.3.6
+Version:	1.3.8
 Release:	%mkrel 1
 License:	GPL+
 Group:		Networking/Other
@@ -125,6 +125,7 @@ The RRD Tools TCL modules.
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 
 %build
+mkdir -p m4
 autoreconf -fi
 
 %configure2_5x \
