@@ -125,7 +125,7 @@ The RRD Tools TCL modules.
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
 
 %build
-autoreconf
+autoreconf -fi
 
 %configure2_5x \
     --with-perl-options="INSTALLDIRS=vendor" \
