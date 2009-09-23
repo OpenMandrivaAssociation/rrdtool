@@ -13,6 +13,7 @@ Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Patch0:		rrdtool-1.3.4-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-bts428778-floating-point-exception.diff
+Patch3:		rrdtool-1.3.8-autocrapfix.diff
 Patch4:		rrdtool-setup.py-module-name.diff
 Patch6:		rrdtool-1.3.6-no-rpath.patch
 # Install tcl bindings to correct location as per policy (the upstream
@@ -117,6 +118,7 @@ The RRD Tools TCL modules.
 %patch0 -p1 -b .pic
 %patch1 -p1
 %patch2 -p0
+%patch3 -p0
 %patch4 -p0
 %patch6 -p1
 %patch7 -p1 -b .tcl_location
