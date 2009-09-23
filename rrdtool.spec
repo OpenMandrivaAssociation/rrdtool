@@ -5,7 +5,7 @@
 Summary:	Round Robin Database tool
 Name:		rrdtool
 Version:	1.3.8
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -21,6 +21,7 @@ Patch7:		rrdtool-1.3.4-tcl_location.patch
 # Relax version requirement for Tcl, it breaks if you're using a
 # pre-release - AdamW 2008/12
 Patch8:		rrdtool-1.3.4-tcl_require.patch
+Requires:	fonts-ttf-dejavu
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	cairo-devel
