@@ -2,32 +2,34 @@
 %define libname %mklibname rrdtool %{major}
 %define develname %mklibname -d rrdtool
 
-Summary:	Round Robin Database tool
+Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.3.8
-Release:	%mkrel 2
-License:	GPL+
+Version:	1.4.1
+Release:	%mkrel 1
+License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
-Source:		http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
+Source0:	http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
+Source1:	rrdcached.init
+Source2:	rrdcached.sysconfig
 Patch0:		rrdtool-1.3.4-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
-Patch2:		rrdtool-bts428778-floating-point-exception.diff
-Patch3:		rrdtool-1.3.8-autocrapfix.diff
-Patch4:		rrdtool-setup.py-module-name.diff
-Patch6:		rrdtool-1.3.6-no-rpath.patch
+Patch2:		rrdtool-1.4.1-avoid-version.diff
+Patch3:		rrdtool-setup.py-module-name.diff
+Patch4:		rrdtool-1.3.6-no-rpath.patch
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
-Patch7:		rrdtool-1.3.4-tcl_location.patch
+Patch5:		rrdtool-1.3.4-tcl_location.patch
 # Relax version requirement for Tcl, it breaks if you're using a
 # pre-release - AdamW 2008/12
-Patch8:		rrdtool-1.3.4-tcl_require.patch
+Patch6:		rrdtool-1.3.4-tcl_require.patch
+Patch7:		rrdtool-1.4.1-tcl_soname.diff
 Requires:	fonts-ttf-dejavu
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	cairo-devel
-BuildRequires:	cgilib-devel
 BuildRequires:	chrpath
+BuildRequires:	dbi-devel
 BuildRequires:	freetype-devel
 BuildRequires:	gettext
 BuildRequires:	gettext-devel
@@ -36,6 +38,7 @@ BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libart_lgpl-devel
 BuildRequires:	libgd-devel
+BuildRequires:	libtool
 BuildRequires:	pango-devel
 BuildRequires:	perl-devel
 BuildRequires:	png-devel >= 1.0.3
@@ -53,9 +56,24 @@ enforce a certain data density. It can be used either via simple wrapper
 scripts (from shell or Perl) or via frontends that poll network devices and
 put a friendly user interface on it.
 
+%package -n	rrdcached
+Summary:	Data caching daemon for RRDtool
+Group:		System/Servers
+Requires(post): rpm-helper
+Requires(preun): rpm-helper
+Requires(pre): rpm-helper
+Requires(postun): rpm-helper
+Requires:	%{name} >= %{version}-%{release}
+
+%description -n	rrdcached
+rrdcached is a daemon that receives updates to existing RRD files, accumulates
+them and, if enough have been received or a defined time has passed, writes the
+updates to the RRD file. The daemon was written with big setups in mind which
+usually runs into I/O related problems. This daemon was written to alleviate
+these problems.
+
 %package -n	%{libname}
 Summary:	RRDTool - round robin database shared libraries
-Version:	%{version}
 Group:		System/Libraries
 
 %description -n	%{libname}
@@ -66,12 +84,10 @@ server load average). This package allow you to use this library directly.
 %package -n	%{develname}
 Summary:	Development libraries and headers for %{libname}
 Group:		Development/Other
-Requires:	%{libname} = %{version}
-Requires:	libpng-devel >= 1.0.3
+Requires:	%{libname} >= %{version}-%{release}
 Requires:	perl-devel
 Requires:	libgd-devel
 Requires:	zlib-devel
-Requires:	cgilib-devel
 Requires:	freetype-devel
 Requires:	libart_lgpl-devel
 Provides:	rrdtool-devel = %{version}-%{release}
@@ -90,7 +106,7 @@ This package provides development libraries and headers for %{libname}.
 %package -n	perl-%{name}
 Summary:	RRD Tool Perl interface
 Group:		Development/Perl
-Requires:	%{name} = %{version}
+Requires:	%{name} >= %{version}-%{release}
 
 %description -n	perl-%{name}
 The RRD Tools Perl modules.
@@ -98,7 +114,8 @@ The RRD Tools Perl modules.
 %package -n	python-%{name}
 Summary:	RRD Tool Python interface
 Group:		Development/Python
-Requires:	%{name} = %{version}  python >= 2.3
+Requires:	%{name} >= %{version}-%{release}
+Requires:	python >= 2.3
 
 %description -n	python-%{name}
 The RRD Tools Python modules.
@@ -106,11 +123,20 @@ The RRD Tools Python modules.
 %package -n	tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
-Requires:	%{name} = %{version}
+Requires:	%{name} >= %{version}-%{release}
 Requires:	tcl
 
 %description -n	tcl-%{name}
 The RRD Tools TCL modules.
+
+%package -n	lua-%{name}
+Summary:	RRD Tool LUA interface
+Group:		Development/Other
+Requires:	%{name} >= %{version}-%{release}
+Requires:	lua
+
+%description -n	lua-%{name}
+The RRD Tools LUA module.
 
 %prep
 
@@ -119,10 +145,13 @@ The RRD Tools TCL modules.
 %patch1 -p1
 %patch2 -p0
 %patch3 -p0
-%patch4 -p0
-%patch6 -p1
-%patch7 -p1 -b .tcl_location
-%patch8 -p1 -b .tcl_require
+%patch4 -p1
+%patch5 -p1 -b .tcl_location
+%patch6 -p1 -b .tcl_require
+%patch7 -p0 -b .tcl_soname
+
+cp %{SOURCE1} .
+cp %{SOURCE2} .
 
 # annoyance be gone
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
@@ -132,8 +161,11 @@ mkdir -p m4
 autoreconf -fi
 
 %configure2_5x \
+    --disable-rpath \
+    --disable-static \
     --with-perl-options="INSTALLDIRS=vendor" \
-    --enable-tcl-site --disable-ruby
+    --enable-tcl-site \
+    --disable-ruby
 
 make
 
@@ -155,11 +187,14 @@ rm -rf %{buildroot}
 
 # moving the docs in the right place (another approach)
 rm -rf installed_docs
-mkdir -p installed_docs/{html,pod,txt,examples}
+mkdir -p installed_docs/{html,pod,txt,examples/rrdcached}
 cp doc/*.txt installed_docs/txt/
 cp doc/*.pod installed_docs/pod/
 cp doc/*.html installed_docs/html/
 cp examples/*.{cgi,pl} installed_docs/examples/
+cp examples/rrdcached/*.{pm,pl} installed_docs/examples/rrdcached/
+# fix attribs
+find installed_docs -type f | xargs chmod 644
 
 #removing things installed in the wrong place
 %{__rm} -rf %{buildroot}%{_prefix}/lib/perl/*.pm
@@ -186,6 +221,19 @@ chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so
 find %{buildroot} -name "*.in" | xargs %{__rm} -f
 find %{buildroot} -name "*.am" | xargs %{__rm} -f
 
+# install rrdcached files
+install -d %{buildroot}%{_sysconfdir}/sysconfig
+install -d %{buildroot}%{_initrddir}
+install -d %{buildroot}/var/lib/rrdcached
+install -d %{buildroot}/var/run/rrdcached
+
+install -m0755 rrdcached.init %{buildroot}%{_initrddir}/rrdcached
+install -m0644 rrdcached.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/rrdcached
+
+# cleanup
+rm -f %{buildroot}%{_prefix}/lib/lua/*/*.*a
+rm -rf %{buildroot}%{_datadir}/rrdtool
+
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
 %endif
@@ -193,6 +241,18 @@ find %{buildroot} -name "*.am" | xargs %{__rm} -f
 %if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
+
+%pre -n rrdcached
+%_pre_useradd rrdcached /var/lib/rrdcached /sbin/nologin
+
+%post -n rrdcached
+%_post_service rrdcached
+
+%preun -n rrdcached
+%_preun_service rrdcached
+
+%postun -n rrdcached
+%_postun_userdel rrdcached
 
 %clean
 rm -rf %{buildroot}
@@ -204,21 +264,31 @@ rm -rf %{buildroot}
 %{_bindir}/rrdcgi
 %{_bindir}/rrdtool
 %{_bindir}/rrdupdate
+%exclude %{_mandir}/man1/rrdcached.1*
 %{_mandir}/man1/*
+
+%files -n rrdcached
+%defattr(-,root,root)
+%{_initrddir}/rrdcached
+%{_sysconfdir}/sysconfig/rrdcached
+%{_bindir}/rrdcached
+%attr(0755,rrdcached,rrdcached) %dir /var/lib/rrdcached
+%attr(0755,rrdcached,rrdcached) %dir /var/run/rrdcached
+%{_mandir}/man1/rrdcached*
 
 %files -n %{libname}
 %defattr(-,root,root)
 %doc COPYING
 %{_libdir}/librrd.so.%{major}*
 %{_libdir}/librrd_th.so.*
+%{_mandir}/man3/librrd.3*
 
 %files -n %{develname}
 %defattr(-,root,root)
 %doc COPYING
 %exclude %{_libdir}/tclrrd%{version}.so
 %{_libdir}/*.so
-%{_libdir}/*.a
-%{_libdir}/*.la
+%{_libdir}/*.*a
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/librrd.pc
 
@@ -242,3 +312,8 @@ rm -rf %{buildroot}
 %doc bindings/tcl/README
 %{tcl_sitearch}/tclrrd
 %{_libdir}/tclrrd%{version}.so
+
+%files -n lua-%{name}
+%defattr (-,root,root)
+%doc bindings/lua/README
+%{_prefix}/lib/lua/*/rrd.so
