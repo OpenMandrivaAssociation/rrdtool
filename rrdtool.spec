@@ -39,6 +39,7 @@ BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libart_lgpl-devel
 BuildRequires:	libgd-devel
 BuildRequires:	libtool
+BuildRequires:	lua-devel
 BuildRequires:	pango-devel
 BuildRequires:	perl-devel
 BuildRequires:	png-devel >= 1.0.3
