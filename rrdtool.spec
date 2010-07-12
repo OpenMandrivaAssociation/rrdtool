@@ -4,7 +4,7 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.4.3
+Version:	1.4.4
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Networking/Other
@@ -24,6 +24,7 @@ Patch5:		rrdtool-1.3.4-tcl_location.patch
 # pre-release - AdamW 2008/12
 Patch6:		rrdtool-1.3.4-tcl_require.patch
 Patch7:		rrdtool-1.4.1-tcl_soname.diff
+Patch8:		rrdtool-1.4.4-gettext-0.17_hack.diff
 Requires:	fonts-ttf-dejavu
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -150,6 +151,7 @@ The RRD Tools LUA module.
 %patch5 -p1 -b .tcl_location
 %patch6 -p1 -b .tcl_require
 %patch7 -p0 -b .tcl_soname
+%patch8 -p0
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
