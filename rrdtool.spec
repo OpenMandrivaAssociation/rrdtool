@@ -151,7 +151,6 @@ The RRD Tools LUA module.
 %patch5 -p1 -b .tcl_location
 %patch6 -p1 -b .tcl_require
 %patch7 -p0 -b .tcl_soname
-%patch8 -p0
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
