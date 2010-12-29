@@ -4,8 +4,8 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.4.4
-Release:	%mkrel 5
+Version:	1.4.5
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -157,6 +157,10 @@ cp %{SOURCE2} .
 
 # annoyance be gone
 perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
+
+# friggin gettext bump
+gettext_version=`gettext --version | head -1 | awk '{ print $4}'`
+perl -pi -e "s|^AM_GNU_GETTEXT_VERSION.*|AM_GNU_GETTEXT_VERSION\($gettext_version\)|g" configure.ac
 
 %build
 mkdir -p m4
