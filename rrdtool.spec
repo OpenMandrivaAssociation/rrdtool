@@ -240,6 +240,9 @@ install -m0644 rrdcached.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/rrdcache
 rm -f %{buildroot}%{_prefix}/lib/lua/*/*.*a
 rm -rf %{buildroot}%{_datadir}/rrdtool
 
+# remove some quite annoying /usr/usr
+perl -pi -e "s|/usr/usr/%{_lib}|%{_libdir}|g" %{buildroot}%{_libdir}/*.la
+
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
 %endif
