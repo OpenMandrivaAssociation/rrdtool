@@ -243,14 +243,6 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 # remove some quite annoying /usr/usr
 perl -pi -e "s|/usr/usr/%{_lib}|%{_libdir}|g" %{buildroot}%{_libdir}/*.la
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
 %pre -n rrdcached
 %_pre_useradd rrdcached /var/lib/rrdcached /sbin/nologin
 
