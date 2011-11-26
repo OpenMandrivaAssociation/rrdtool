@@ -49,6 +49,7 @@ BuildRequires:	libpng-devel >= 1.5
 BuildRequires:	python-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
