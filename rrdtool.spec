@@ -5,7 +5,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.4.5
-Release:	%mkrel 5
+Release:	%mkrel 6
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
@@ -240,8 +240,7 @@ install -m0644 rrdcached.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/rrdcache
 rm -f %{buildroot}%{_prefix}/lib/lua/*/*.*a
 rm -rf %{buildroot}%{_datadir}/rrdtool
 
-# remove some quite annoying /usr/usr
-perl -pi -e "s|/usr/usr/%{_lib}|%{_libdir}|g" %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 %pre -n rrdcached
 %_pre_useradd rrdcached /var/lib/rrdcached /sbin/nologin
