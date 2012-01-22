@@ -5,7 +5,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.4.5
-Release:	%mkrel 6
+Release:	%mkrel 7
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
