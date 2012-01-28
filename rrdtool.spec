@@ -4,19 +4,19 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.4.5
-Release:	%mkrel 7
+Version:	1.4.7
+Release:	1
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
 Source0:	http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Source1:	rrdcached.init
 Source2:	rrdcached.sysconfig
-Patch0:		rrdtool-1.3.4-pic.diff
+Patch0:		rrdtool-1.4.7-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-1.4.1-avoid-version.diff
 Patch3:		rrdtool-setup.py-module-name.diff
-Patch4:		rrdtool-1.3.6-no-rpath.patch
+Patch4:		rrdtool-1.4.7-no-rpath.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch5:		rrdtool-1.3.4-tcl_location.patch
@@ -26,31 +26,28 @@ Patch6:		rrdtool-1.3.4-tcl_require.patch
 Patch7:		rrdtool-1.4.1-tcl_soname.diff
 Patch8:		rrdtool-1.4.4-gettext-0.17_hack.diff
 Requires:	fonts-ttf-dejavu
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	cairo-devel
+BuildRequires:	autoconf automake libtool
+BuildRequires:	cairo-devel >= 1.10.2
 BuildRequires:	chrpath
 BuildRequires:	dbi-devel
-BuildRequires:	freetype-devel
+BuildRequires:	fontconfig-devel >= 2.8.0
+BuildRequires:	freetype2-devel >= 2.4.6
+BuildRequires:	gd-devel
 BuildRequires:	gettext
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libart_lgpl-devel
-BuildRequires:	libgd-devel
-BuildRequires:	libtool
-BuildRequires:	lua-devel
-#BuildRequires:	pango-devel
-BuildRequires:	pkgconfig(pango)
-BuildRequires:	pkgconfig(pangocairo)
-BuildRequires:	perl-devel
 BuildRequires:	libpng-devel >= 1.5
+BuildRequires:	lua-devel
+BuildRequires:	perl-devel
+BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(pango) >= 1.28.4
+BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
 BuildRequires:	python-devel
 BuildRequires:	tcl tcl-devel
 BuildRequires:	zlib-devel
-BuildRequires:	pkgconfig
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
@@ -91,9 +88,9 @@ Summary:	Development libraries and headers for %{libname}
 Group:		Development/Other
 Requires:	%{libname} >= %{version}-%{release}
 Requires:	perl-devel
-Requires:	libgd-devel
+Requires:	gd-devel
 Requires:	zlib-devel
-Requires:	freetype-devel
+Requires:	freetype2-devel
 Requires:	libart_lgpl-devel
 Provides:	rrdtool-devel = %{version}-%{release}
 Provides:	librrdtool-devel = %{version}-%{release}
@@ -257,11 +254,7 @@ rm -f %{buildroot}%{_libdir}/*.*a
 %postun -n rrdcached
 %_postun_userdel rrdcached
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc CONTRIBUTORS COPYING COPYRIGHT NEWS README THREADS TODO
 %doc installed_docs/txt installed_docs/html
 %{_bindir}/rrdcgi
@@ -271,7 +264,6 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %files -n rrdcached
-%defattr(-,root,root)
 %{_initrddir}/rrdcached
 %{_sysconfdir}/sysconfig/rrdcached
 %{_bindir}/rrdcached
@@ -280,14 +272,12 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rrdcached*
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc COPYING
 %{_libdir}/librrd.so.%{major}*
 %{_libdir}/librrd_th.so.*
 %{_mandir}/man3/librrd.3*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %doc COPYING
 %exclude %{_libdir}/tclrrd%{version}.so
 %{_libdir}/*.so
@@ -295,7 +285,6 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/librrd.pc
 
 %files -n perl-%{name}
-%defattr (-,root,root)
 %doc installed_docs/pod installed_docs/examples
 %{perl_vendorarch}/*.pm
 %{perl_vendorlib}/*.pm
@@ -305,17 +294,14 @@ rm -rf %{buildroot}
 %{_mandir}/man3*/RRDs.3*
 
 %files -n python-%{name}
-%defattr (-,root,root)
 %doc bindings/python/AUTHORS bindings/python/COPYING bindings/python/README
 %py_platsitedir/*
 
 %files -n tcl-%{name}
-%defattr (-,root,root)
 %doc bindings/tcl/README
 %{tcl_sitearch}/tclrrd
 %{_libdir}/tclrrd%{version}.so
 
 %files -n lua-%{name}
-%defattr (-,root,root)
 %doc bindings/lua/README
 %{_prefix}/lib/lua/*/rrd.so
