@@ -1,0 +1,11 @@
+--- bindings/lua/Makefile.am	2008-11-04 08:12:46.000000000 +0100
++++ bindings/lua/Makefile.am.oden	2009-11-06 18:35:19.000000000 +0100
+@@ -24,7 +24,7 @@
+   rrd_la_SOURCES = rrdlua.c
+ endif
+ rrd_la_LIBADD = -lrrd -lm
+-rrd_la_LDFLAGS = -module -version-info $(LIB_VERSION_INFO) $(LUA_LFLAGS) -L$(top_builddir)/src/.libs
++rrd_la_LDFLAGS = -module -avoid-version $(LUA_LFLAGS) -L$(top_builddir)/src/.libs
+ rrd_la_CFLAGS = -I$(top_srcdir)/src -I$(top_srcdir) $(LUA_CFLAGS) $(LUA_DEFINES) -DLIB_VERSION=\"$(LIB_VERSION)\"
+ 
+ .PHONY: test.lua

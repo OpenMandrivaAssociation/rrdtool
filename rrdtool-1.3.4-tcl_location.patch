@@ -1,0 +1,26 @@
+--- rrdtool-1.3.4/bindings/tcl/Makefile.am	2008-06-04 09:18:42.000000000 -0700
++++ rrdtool-1.3.4/bindings/tcl/Makefile.am.new	2008-12-03 14:07:41.000000000 -0800
+@@ -13,6 +13,7 @@
+ TCL_LD_SEARCH_FLAGS = @TCL_LD_SEARCH_FLAGS@
+ TCL_STUB_LIB_SPEC = @TCL_STUB_LIB_SPEC@
+ TCL_INCLUDE_SPEC = @TCL_INCLUDE_SPEC@
++TCL_VERSION = @TCL_VERSION@
+ 
+ CLEANFILES = tclrrd.o tclrrd.so
+ 
+@@ -21,14 +22,9 @@
+ LIBDIRS            = -L$(top_builddir)/src/.libs -L$(top_builddir)/src -L$(libdir)
+ LIB_RUNTIME_DIR    = $(libdir)
+ 
+-if BUILD_TCL_SITE
+-tclpkgdir = @TCL_PACKAGE_DIR@
++tclpkgdir = $(libdir)/tcl$(TCL_VERSION)/tclrrd
+ tclpkg_DATA = pkgIndex.tcl
+ tclpkg_SCRIPTS = ifOctets.tcl
+-else
+-pkglib_DATA = pkgIndex.tcl
+-pkglib_SCRIPTS = ifOctets.tcl
+-endif
+ 
+ # Automake doen't like `tclrrd$(VERSION)$(TCL_SHLIB_SUFFIX)' as
+ # library name. So we build and install this library `by hand'.

@@ -1,0 +1,11 @@
+--- bindings/tcl/Makefile.am	2008-10-01 22:01:43.000000000 +0200
++++ bindings/tcl/Makefile.am.oden	2009-11-07 15:16:06.000000000 +0100
+@@ -44,7 +44,7 @@
+ all-local: $(TCL_RRD_LIB)
+ 
+ $(TCL_RRD_LIB): tclrrd.o
+-	$(TCL_SHLIB_LD) $(TCL_LD_SEARCH_FLAGS) $(LIBDIRS) $< -o $@ -lrrd_th -lm $(TCL_STUB_LIB_SPEC) $(LDFLAGS) $(LIBS)
++	$(TCL_SHLIB_LD) -Wl,-soname=$(TCL_RRD_LIB) $(TCL_LD_SEARCH_FLAGS) $(LIBDIRS) $< -o $@ -lrrd_th -lm $(TCL_STUB_LIB_SPEC) $(LDFLAGS) $(LIBS)
+ 
+ tclrrd.o: tclrrd.c
+ 	$(CC) $(AM_CFLAGS) $(CFLAGS) $(TCL_SHLIB_CFLAGS) $(AM_CPPFLAGS) -c tclrrd.c -DVERSION=\"$(VERSION)\"

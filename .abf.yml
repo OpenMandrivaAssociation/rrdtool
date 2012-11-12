@@ -1,0 +1,4 @@
+sources:
+  "rrdcached.init:"	63648b7cfe43246fbf709ae9ff3973fd321d44af
+  "rrdcached.sysconfig:"	503fc8d5004c9599f913313a53d6f070b058426e
+  "rrdtool-1.4.7.tar.gz:"	faab7df7696b69f85d6f89dd9708d7cf0c9a273b
