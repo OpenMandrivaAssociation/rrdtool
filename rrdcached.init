@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+# rrdcached	This shell script takes care of starting and stopping rrdcached.
+#
+# chkconfig: 345 19 81
+# description: Data caching daemon for rrdtool.
+# probe: false
+# processname: rrdcached
+# pidfile: /var/run/rrdcached/rrdcached.pid
+# config: /etc/sysconfig/rrdcached
+### BEGIN INIT INFO
+# Provides: rrdcached
+# Required-Start: $network
+# Required-Stop: $network
+# Default-Start: 3 4 5
+# Short-Description: Data caching daemon for rrdtool.
+# Description: Data caching daemon for rrdtool.
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+[ -f /usr/bin/rrdcached ] || exit 0
+
+# set default values
+RRDCACHED_USER="rrdcached"
+RRDCACHED_PIDFILE="/var/run/rrdcached/rrdcached.pid"
+RRDCACHED_SOCKFILE="/var/lib/rrdcached/rrdcached.socket"
+RRDCACHED_SOCKPERMS=0660
+RRDCACHED_OPTIONS="-w 300 -z 300"
+
+[ -f /etc/sysconfig/rrdcached ] && . /etc/sysconfig/rrdcached
+
+# See how we were called.
+case "$1" in
+  start)
+	if [ -n "`/sbin/pidof rrdcached`" ]; then
+            echo -n "rrdcached : already running"
+	    RETVAL=$?
+	    echo
+	    exit $RETVAL
+        fi
+	echo -n "Starting rrdcached: "
+	daemon --user=$RRDCACHED_USER rrdcached $RRDCACHED_OPTIONS -p $RRDCACHED_PIDFILE -l $RRDCACHED_SOCKFILE
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && success || failure
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/rrdcached
+	[ $RETVAL -eq 0 ] && chmod $RRDCACHED_SOCKPERMS $RRDCACHED_SOCKFILE
+	;;
+  stop)
+	echo -n "Stopping rrdcached: "
+	killproc rrdcached
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/rrdcached && rm -rf $RRDCACHED_PIDFILE
+	;;
+  status)
+	status rrdcached
+	RETVAL=$?
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	RETVAL=$?
+	;;
+  *)
+	echo "Usage: rrdcached {start|stop|status|restart|condrestart|reload}"
+	exit 1
+esac
+
+exit $RETVAL
