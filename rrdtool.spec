@@ -12,6 +12,7 @@ URL:		http://oss.oetiker.ch/rrdtool/
 Source0:	http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
 Source1:	rrdcached.init
 Source2:	rrdcached.sysconfig
+Source100:	rrdtool.rpmlintrc
 Patch0:		rrdtool-1.4.7-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-1.4.1-avoid-version.diff
