@@ -1,0 +1,14 @@
+[Unit]
+Description=Data caching daemon for rrdtool
+After=syslog.target network.target
+ 
+[Service]
+Type=forking
+User=rrdcached
+EnvironmentFile=-/etc/sysconfig/rrdcached
+PIDFile=/run/rrdcached/rrdcached.pid
+ExecStart=/usr/bin/rrdcached $RRDCACHED_OPTIONS -p /run/rrdcached/rrdcached.pid -l $RRDCACHED_SOCKFILE
+ExecStartPost=/bin/chmod $RRDCACHED_SOCKPERMS $RRDCACHED_SOCKFILE
+ 
+[Install]
+WantedBy=multi-user.target

@@ -10,8 +10,9 @@ License:	GPLv2+
 Group:		Networking/Other
 URL:		http://oss.oetiker.ch/rrdtool/
 Source0:	http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
-Source1:	rrdcached.init
+Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
+Source3:	rrdcached.tmpfiles
 Source100:	rrdtool.rpmlintrc
 Patch0:		rrdtool-1.4.7-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
@@ -20,10 +21,10 @@ Patch3:		rrdtool-setup.py-module-name.diff
 Patch4:		rrdtool-1.4.7-no-rpath.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
-Patch5:		rrdtool-1.3.4-tcl_location.patch
+Patch5:		rrdtool-1.4.8-tcl_location.diff
 # Relax version requirement for Tcl, it breaks if you're using a
 # pre-release - AdamW 2008/12
-Patch6:		rrdtool-1.3.4-tcl_require.patch
+Patch6:		rrdtool-1.4.8-imginfo-check.patch
 Patch7:		rrdtool-1.4.1-tcl_soname.diff
 Patch8:		rrdtool-1.4.4-gettext-0.17_hack.diff
 Requires:	fonts-ttf-dejavu
@@ -150,7 +151,7 @@ The RRD Tools LUA module.
 %patch3 -p0
 %patch4 -p1
 %patch5 -p1 -b .tcl_location
-%patch6 -p1 -b .tcl_require
+%patch6 -p1
 %patch7 -p0 -b .tcl_soname
 
 cp %{SOURCE1} .
@@ -234,8 +235,9 @@ install -d %{buildroot}%{_initrddir}
 install -d %{buildroot}/var/lib/rrdcached
 install -d %{buildroot}/var/run/rrdcached
 
-install -m0755 rrdcached.init %{buildroot}%{_initrddir}/rrdcached
-install -m0644 rrdcached.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/rrdcached
+install -D -m 755 %{SOURCE1} %{buildroot}%{_unitdir}/rrdcached.service
+install -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/rrdcached
+install -D -m 644 %{SOURCE3} %{buildroot}%{_prefix}/lib/tmpfiles.d/rrdcached.conf
 
 # cleanup
 rm -f %{buildroot}%{_prefix}/lib/lua/*/*.*a
@@ -260,16 +262,18 @@ rm -f %{buildroot}%{_libdir}/*.*a
 %doc installed_docs/txt installed_docs/html
 %{_bindir}/rrdcgi
 %{_bindir}/rrdtool
+%{_bindir}/rrdcreate
+%{_bindir}/rrdinfo
 %{_bindir}/rrdupdate
 %exclude %{_mandir}/man1/rrdcached.1*
 %{_mandir}/man1/*
 
 %files -n rrdcached
-%{_initrddir}/rrdcached
-%{_sysconfdir}/sysconfig/rrdcached
+%config(noreplace) %{_sysconfdir}/sysconfig/rrdcached
+%{_prefix}/lib/tmpfiles.d/rrdcached.conf
+%{_unitdir}/rrdcached.service
 %{_bindir}/rrdcached
 %attr(0755,rrdcached,rrdcached) %dir /var/lib/rrdcached
-%attr(0755,rrdcached,rrdcached) %dir /var/run/rrdcached
 %{_mandir}/man1/rrdcached*
 
 %files -n %{libname}

@@ -1,11 +1,4 @@
 # Please read the manpage for more info about possible runtime options.
-
-RRDCACHED_USER="rrdcached"
-
-RRDCACHED_PIDFILE="/var/run/rrdcached/rrdcached.pid"
-
 RRDCACHED_SOCKFILE="/var/lib/rrdcached/rrdcached.socket"
-
 RRDCACHED_SOCKPERMS=0660
-
 RRDCACHED_OPTIONS="-w 300 -z 300"
