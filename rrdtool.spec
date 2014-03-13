@@ -27,6 +27,7 @@ Patch5:		rrdtool-1.4.8-tcl_location.diff
 Patch6:		rrdtool-1.4.8-imginfo-check.patch
 Patch7:		rrdtool-1.4.1-tcl_soname.diff
 Patch8:		rrdtool-1.4.4-gettext-0.17_hack.diff
+Patch9:		rrdtool-1.4.7-lua-5.2.patch
 Requires:	fonts-ttf-dejavu
 BuildRequires:	autoconf automake libtool
 BuildRequires:	cairo-devel >= 1.10.2
@@ -153,6 +154,7 @@ The RRD Tools LUA module.
 %patch5 -p1 -b .tcl_location
 %patch6 -p1
 %patch7 -p0 -b .tcl_soname
+%patch9 -p1
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
