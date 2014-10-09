@@ -166,6 +166,7 @@ mkdir -p m4
 autoreconf -fi
 
 %build
+export PYTHON=%{__python2}
 %configure2_5x \
 	--disable-static \
 	--with-perl-options="INSTALLDIRS=vendor" \
