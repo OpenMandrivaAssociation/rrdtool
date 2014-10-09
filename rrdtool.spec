@@ -215,6 +215,7 @@ rm -f %{buildroot}%{perl_vendorarch}/ntmake.pl
 #chrpath -d %{buildroot}%{_bindir}/*
 
 # the problem has now moved to the perl stuff...
+find %{buildroot}%{_prefix}/lib/perl* -name "*.so" | xargs chmod u+w
 find %{buildroot}%{_prefix}/lib/perl* -name "*.so" | xargs chrpath -d 
 
 # and the tcl stuff
@@ -293,7 +294,7 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 
 %files -n python-%{name}
 %doc bindings/python/AUTHORS bindings/python/COPYING bindings/python/README
-%py_platsitedir/*
+%py2_platsitedir/*
 
 %files -n tcl-%{name}
 %doc bindings/tcl/README
