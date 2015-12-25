@@ -233,7 +233,7 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 %_postun_userdel rrdcached
 
 %files
-%doc CONTRIBUTORS COPYING COPYRIGHT NEWS README THREADS TODO
+%doc CONTRIBUTORS COPYRIGHT NEWS THREADS TODO
 %doc installed_docs/txt installed_docs/html
 %{_bindir}/rrdcgi
 %{_bindir}/rrdtool
@@ -258,7 +258,6 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 %{_libdir}/librrd_th.so.%{major}*
 
 %files -n %{devname}
-%doc COPYING
 %exclude %{_libdir}/tclrrd%{version}.so
 %{_libdir}/*.so
 %{_includedir}/*.h
