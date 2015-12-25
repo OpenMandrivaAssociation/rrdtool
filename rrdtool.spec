@@ -284,5 +284,5 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 
 %files -n lua-%{name}
 %doc bindings/lua/README
-%{_prefix}/lib/lua/*/rrd.so
+%{_libdir}/lua/*/rrd.so
 
