@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   rrdtool-1.4.8.tar.gz: 56d68857f39e70bfa32360947614d8220702ed02
+sources:
+  rrdtool-1.5.5.tar.gz: 8275cd4dd3fb2086686ee5acfc7cc5e756483e0e

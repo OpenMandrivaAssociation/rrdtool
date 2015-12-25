@@ -2,11 +2,12 @@
 %define libname %mklibname rrd %{major}
 %define libth %mklibname rrd_th %{major}
 %define devname %mklibname -d rrdtool
+%define _disable_rebuild_configure 1
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.4.8
-Release:	13
+Version:	1.5.5
+Release:	1
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
@@ -15,20 +16,12 @@ Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
 Source3:	rrdcached.tmpfiles
 Source100:	rrdtool.rpmlintrc
-Patch0:		rrdtool-1.4.7-pic.diff
 Patch1:		rrdtool-1.2.23-fix-examples.patch
 Patch2:		rrdtool-1.4.1-avoid-version.diff
-Patch3:		rrdtool-setup.py-module-name.diff
-Patch4:		rrdtool-1.4.7-no-rpath.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch5:		rrdtool-1.4.8-tcl_location.diff
-# Relax version requirement for Tcl, it breaks if you're using a
-# pre-release - AdamW 2008/12
-Patch6:		rrdtool-1.4.8-imginfo-check.patch
-Patch7:		rrdtool-1.4.1-tcl_soname.diff
-Patch8:		rrdtool-1.4.4-gettext-0.17_hack.diff
-Patch9:		rrdtool-1.4.7-lua-5.2.patch
+Patch9:		rrdtool-1.5.4-lua-5.2.patch
 BuildRequires:	chrpath
 BuildRequires:	dbi-devel
 BuildRequires:	gettext
@@ -143,29 +136,17 @@ The RRD Tools LUA module.
 
 %prep
 %setup -q
-%patch0 -p1 -b .pic
 %patch1 -p1
-%patch2 -p0
-%patch3 -p0
-%patch4 -p1
+%patch2 -p1
 %patch5 -p1 -b .tcl_location
-%patch6 -p1
-%patch7 -p0 -b .tcl_soname
 %patch9 -p1
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
 
-# annoyance be gone
-perl -pi -e "s|^sleep .*|usleep 10000|g" configure.*
-
-# friggin gettext bump
-gettext_version=`gettext --version | head -1 | awk '{ print $4}'`
-perl -pi -e "s|^AM_GNU_GETTEXT_VERSION.*|AM_GNU_GETTEXT_VERSION\($gettext_version\)|g" configure.ac
-mkdir -p m4
+%build
 autoreconf -fi
 
-%build
 export PYTHON=%{__python2}
 %configure2_5x \
 	--disable-static \

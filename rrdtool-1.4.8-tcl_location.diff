@@ -1,15 +1,14 @@
-diff -Naur rrdtool-1.4.8/bindings/tcl/Makefile.am rrdtool-1.4.8.oden/bindings/tcl/Makefile.am
---- rrdtool-1.4.8/bindings/tcl/Makefile.am	2013-05-23 09:55:07.000000000 +0200
-+++ rrdtool-1.4.8.oden/bindings/tcl/Makefile.am	2013-05-31 18:02:32.906179762 +0200
-@@ -14,6 +14,7 @@
+diff -Naurp rrdtool-1.5.5/bindings/tcl/Makefile.am rrdtool-1.5.5.oden/bindings/tcl/Makefile.am
+--- rrdtool-1.5.5/bindings/tcl/Makefile.am	2015-11-10 16:07:11.000000000 +0100
++++ rrdtool-1.5.5.oden/bindings/tcl/Makefile.am	2015-11-16 09:36:10.825272050 +0100
+@@ -14,21 +14,16 @@ TCL_PACKAGE_PATH = @TCL_PACKAGE_PATH@
  TCL_LD_SEARCH_FLAGS = @TCL_LD_SEARCH_FLAGS@
  TCL_STUB_LIB_SPEC = @TCL_STUB_LIB_SPEC@
  TCL_INCLUDE_SPEC = @TCL_INCLUDE_SPEC@
 +TCL_VERSION = @TCL_VERSION@
  
- CLEANFILES = tclrrd.o tclrrd.so
- 
-@@ -22,14 +23,9 @@
+ SRC_DIR            = $(top_srcdir)/src
+ AM_CPPFLAGS        = $(TCL_INCLUDE_SPEC) -I$(top_builddir)/src -I$(SRC_DIR) -DUSE_TCL_STUBS
  LIBDIRS            = -L$(top_builddir)/src/.libs -L$(top_builddir)/src -L$(libdir)
  LIB_RUNTIME_DIR    = $(libdir)
  
@@ -19,8 +18,9 @@ diff -Naur rrdtool-1.4.8/bindings/tcl/Makefile.am rrdtool-1.4.8.oden/bindings/tc
  tclpkg_DATA = pkgIndex.tcl
  tclpkg_SCRIPTS = ifOctets.tcl
 -else
--pkgdata_DATA = pkgIndex.tcl
--pkgdata_SCRIPTS = ifOctets.tcl
+-pkgindexdir = $(pkglibdir)
+-pkgindex_DATA = pkgIndex.tcl
+-pkgindex_SCRIPTS = ifOctets.tcl
 -endif
  
  # Automake doen't like `tclrrd$(VERSION)$(TCL_SHLIB_SUFFIX)' as
