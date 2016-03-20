@@ -7,7 +7,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.5.5
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
@@ -54,7 +54,7 @@ enforce a certain data density. It can be used either via simple wrapper
 scripts (from shell or Perl) or via frontends that poll network devices and
 put a friendly user interface on it.
 
-%package -n	rrdcached
+%package -n rrdcached
 Summary:	Data caching daemon for RRDtool
 Group:		System/Servers
 Requires(post,preun,pre,postun):	rpm-helper
@@ -67,7 +67,7 @@ updates to the RRD file. The daemon was written with big setups in mind which
 usually runs into I/O related problems. This daemon was written to alleviate
 these problems.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	RRDTool - round robin database shared libraries
 Group:		System/Libraries
 Obsoletes:	%{_lib}rrdtool4 < 1.4.8-7
@@ -75,7 +75,7 @@ Obsoletes:	%{_lib}rrdtool4 < 1.4.8-7
 %description -n	%{libname}
 This package contains a shared library for %{name}.
 
-%package -n	%{libth}
+%package -n %{libth}
 Summary:	RRDTool - round robin database shared libraries
 Group:		System/Libraries
 Conflicts:	%{_lib}rrdtool4 < 1.4.8-7
@@ -83,7 +83,7 @@ Conflicts:	%{_lib}rrdtool4 < 1.4.8-7
 %description -n	%{libth}
 This package contains a shared library for %{name}.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development libraries and headers for %{libname}
 Group:		Development/Other
 Requires:	%{libname} >= %{version}-%{release}
@@ -99,7 +99,7 @@ server load average).
 
 This package provides development libraries and headers for %{libname}.
 
-%package -n	perl-%{name}
+%package -n perl-%{name}
 Summary:	RRD Tool Perl interface
 Group:		Development/Perl
 Requires:	%{name} >= %{version}-%{release}
@@ -107,7 +107,7 @@ Requires:	%{name} >= %{version}-%{release}
 %description -n	perl-%{name}
 The RRD Tools Perl modules.
 
-%package -n	python-%{name}
+%package -n python-%{name}
 Summary:	RRD Tool Python interface
 Group:		Development/Python
 Requires:	%{name} >= %{version}-%{release}
@@ -116,7 +116,7 @@ Requires:	python >= 2.3
 %description -n	python-%{name}
 The RRD Tools Python modules.
 
-%package -n	tcl-%{name}
+%package -n tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
 Requires:	%{name} >= %{version}-%{release}
@@ -125,7 +125,7 @@ Requires:	tcl
 %description -n	tcl-%{name}
 The RRD Tools TCL modules.
 
-%package -n	lua-%{name}
+%package -n lua-%{name}
 Summary:	RRD Tool LUA interface
 Group:		Development/Other
 Requires:	%{name} >= %{version}-%{release}
@@ -148,8 +148,9 @@ cp %{SOURCE2} .
 autoreconf -fi
 
 export PYTHON=%{__python2}
-%configure2_5x \
+%configure \
 	--disable-static \
+	--with-systemdsystemunitdir="%{_systemunitdir}" \
 	--with-perl-options="INSTALLDIRS=vendor" \
 	--enable-tcl-site \
 	--disable-ruby
@@ -220,17 +221,14 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_prefix}/lib/tmpfiles.d/rrdcached.con
 # cleanup
 rm -rf %{buildroot}%{_datadir}/rrdtool
 
+# (tpg) systemd preset
+install -d %{buildroot}%{_presetdir}
+cat > %{buildroot}%{_presetdir}/86-rrdcached.preset << EOF
+enable rrdcached.service
+EOF
+
 %pre -n rrdcached
 %_pre_useradd rrdcached /var/lib/rrdcached /sbin/nologin
-
-%post -n rrdcached
-%_post_service rrdcached
-
-%preun -n rrdcached
-%_preun_service rrdcached
-
-%postun -n rrdcached
-%_postun_userdel rrdcached
 
 %files
 %doc CONTRIBUTORS COPYRIGHT NEWS THREADS TODO
@@ -246,6 +244,7 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 %files -n rrdcached
 %config(noreplace) %{_sysconfdir}/sysconfig/rrdcached
 %{_prefix}/lib/tmpfiles.d/rrdcached.conf
+%{_presetdir}/86-rrdcached.preset
 %{_unitdir}/rrdcached.service
 %{_bindir}/rrdcached
 %attr(0755,rrdcached,rrdcached) %dir /var/lib/rrdcached
