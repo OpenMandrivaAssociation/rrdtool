@@ -224,6 +224,7 @@ rm -rf %{buildroot}%{_datadir}/rrdtool
 # (tpg) systemd preset
 install -d %{buildroot}%{_presetdir}
 cat > %{buildroot}%{_presetdir}/86-rrdcached.preset << EOF
+enable rrdcached.socket
 enable rrdcached.service
 EOF
 
@@ -246,6 +247,7 @@ EOF
 %{_prefix}/lib/tmpfiles.d/rrdcached.conf
 %{_presetdir}/86-rrdcached.preset
 %{_unitdir}/rrdcached.service
+%{_unitdir}/rrdcached.socket
 %{_bindir}/rrdcached
 %attr(0755,rrdcached,rrdcached) %dir /var/lib/rrdcached
 %{_mandir}/man1/rrdcached*
