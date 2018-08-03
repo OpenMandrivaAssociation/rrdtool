@@ -1,4 +1,4 @@
-%define major 4
+%define major 8
 %define libname %mklibname rrd %{major}
 %define libth %mklibname rrd_th %{major}
 %define devname %mklibname -d rrdtool
@@ -6,8 +6,8 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.5.5
-Release:	4
+Version:	1.7.0
+Release:	1
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
