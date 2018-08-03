@@ -140,7 +140,7 @@ The RRD Tools LUA module.
 %patch1 -p1
 %patch2 -p1
 %patch5 -p1 -b .tcl_location
-%patch9 -p1
+#patch9 -p1
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
