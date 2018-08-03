@@ -7,7 +7,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.5.5
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
@@ -43,6 +43,7 @@ BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
 BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libxml-2.0)
 Requires:	fonts-ttf-dejavu
 
 %description
