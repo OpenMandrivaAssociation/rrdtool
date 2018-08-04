@@ -116,7 +116,7 @@ The RRD Tools Perl modules.
 Summary:	RRD Tool Python interface
 Group:		Development/Python
 Requires:	%{name} >= %{version}-%{release}
-Requires:	python >= 2.3
+Requires:	python >= 2.7
 
 %description -n	python-%{name}
 The RRD Tools Python modules.
@@ -153,7 +153,7 @@ cp %{SOURCE2} .
 %build
 autoreconf -fi
 
-#export PYTHON=%{__python2}
+export PYTHON=%{__python2}
 %configure \
 	--disable-static \
 	--with-systemdsystemunitdir="%{_systemunitdir}" \
