@@ -22,6 +22,7 @@ Patch2:		rrdtool-1.4.1-avoid-version.diff
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch5:		rrdtool-1.4.8-tcl_location.diff
 #Patch9:		rrdtool-1.5.4-lua-5.2.patch
+Patch10:	fix-python.patch
 BuildRequires:	chrpath
 BuildRequires:	dbi-devel
 BuildRequires:	gettext
@@ -144,6 +145,7 @@ The RRD Tools LUA module.
 %patch2 -p1
 %patch5 -p1 -b .tcl_location
 #patch9 -p1
+%patch10 -p0
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
