@@ -43,6 +43,7 @@ BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
 BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(python2)
 BuildRequires:	pythonegg(setuptools)
+BuildRequires:	python3egg(setuptools)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
