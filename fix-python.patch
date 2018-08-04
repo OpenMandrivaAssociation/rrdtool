@@ -1,0 +1,11 @@
+Index: bindings/python/setup.py
+===================================================================
+--- bindings/python/setup.py
++++ bindings/python/setup.py	2018-08-04 03:38:18.293724091 +0200
+@@ -1,5 +1,6 @@
+ #!/usr/bin/env python
+ import os
++import sys
+ 
+ try:
+     from setuptools import setup, Extension
