@@ -41,6 +41,7 @@ BuildRequires:	pkgconfig(lua)
 BuildRequires:	pkgconfig(pango) >= 1.28.4
 BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
 BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
