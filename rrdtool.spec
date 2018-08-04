@@ -153,7 +153,7 @@ cp %{SOURCE2} .
 %build
 autoreconf -fi
 
-export PYTHON=%{__python2}
+#export PYTHON=%{__python2}
 %configure \
 	--disable-static \
 	--with-systemdsystemunitdir="%{_systemunitdir}" \
