@@ -16,12 +16,13 @@ Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
 Source3:	rrdcached.tmpfiles
 Source100:	rrdtool.rpmlintrc
-Patch1:		rrdtool-1.2.23-fix-examples.patch
-Patch2:		rrdtool-1.4.1-avoid-version.diff
+Patch1:         rrdtool-1.2.23-fix-examples.patch
+Patch2:         rrdtool-1.4.1-avoid-version.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
-Patch5:		rrdtool-1.4.8-tcl_location.diff
-Patch9:		rrdtool-1.5.4-lua-5.2.patch
+Patch5:         rrdtool-1.4.8-tcl_location.diff
+Patch6:         rrdtool-1.6.0-ruby-2-fix.patch
+Patch9:         rrdtool-1.5.5-socket_dir.diff
 BuildRequires:	chrpath
 BuildRequires:	dbi-devel
 BuildRequires:	gettext
@@ -58,6 +59,7 @@ put a friendly user interface on it.
 %package -n rrdcached
 Summary:	Data caching daemon for RRDtool
 Group:		System/Servers
+BuildRequires:	rpm-helper
 Requires(post,preun,pre,postun):	rpm-helper
 Requires:	%{name} >= %{version}-%{release}
 
@@ -140,7 +142,8 @@ The RRD Tools LUA module.
 %patch1 -p1
 %patch2 -p1
 %patch5 -p1 -b .tcl_location
-%patch9 -p1
+%patch6 -p1 -b .ruby-2-fix
+%patch9 -p1 -b .socket_dir
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
