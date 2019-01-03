@@ -247,8 +247,6 @@ EOF
 %{_bindir}/rrdcreate
 %{_bindir}/rrdinfo
 %{_bindir}/rrdupdate
-%exclude %{_mandir}/man1/rrdcached.1*
-%{_mandir}/man1/*
 
 %files -n rrdcached
 %config(noreplace) %{_sysconfdir}/sysconfig/rrdcached
@@ -258,7 +256,6 @@ EOF
 %{_unitdir}/rrdcached.socket
 %{_bindir}/rrdcached
 %attr(0755,rrdcached,rrdcached) %dir /var/lib/rrdcached
-%{_mandir}/man1/rrdcached*
 
 %files -n %{libname}
 %{_libdir}/librrd.so.%{major}*
