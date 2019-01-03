@@ -160,7 +160,8 @@ export PYTHON=%{__python2}
 	--with-systemdsystemunitdir="%{_unitdir}" \
 	--with-perl-options="INSTALLDIRS=vendor" \
 	--enable-tcl-site \
-	--disable-ruby
+	--disable-ruby \
+	--disable-docs
 
 %make_build -j1
 
