@@ -228,10 +228,12 @@ enable rrdcached.socket
 enable rrdcached.service
 EOF
 
+%find_lang %{name}
+
 %pre -n rrdcached
 %_pre_useradd rrdcached /var/lib/rrdcached /sbin/nologin
 
-%files
+%files -f %{name}.lang
 %doc CONTRIBUTORS COPYRIGHT NEWS THREADS TODO
 %doc installed_docs/txt installed_docs/html
 %{_bindir}/rrdcgi
@@ -264,6 +266,8 @@ EOF
 %{perl_vendorlib}/*.pm
 %dir %{perl_vendorarch}/auto/RRDs
 %{perl_vendorarch}/auto/RRDs/RRDs.so
+%{_mandir}/man3*/RRDp.3*
+%{_mandir}/man3*/RRDs.3*
 
 %files -n python-%{name}
 %py2_platsitedir/*
