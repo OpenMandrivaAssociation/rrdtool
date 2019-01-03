@@ -45,6 +45,8 @@ BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(python2)
+BuildRequires:	python2-setuptools
 Requires:	fonts-ttf-dejavu
 
 %description
