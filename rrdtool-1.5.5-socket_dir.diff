@@ -1,0 +1,12 @@
+diff -Naurp rrdtool-1.5.5/src/rrd_client.h rrdtool-1.5.5.oden/src/rrd_client.h
+--- rrdtool-1.5.5/src/rrd_client.h	2015-11-10 18:15:18.000000000 +0100
++++ rrdtool-1.5.5.oden/src/rrd_client.h	2015-11-16 10:19:51.173800933 +0100
+@@ -35,7 +35,7 @@
+ #define RRD_CMD_MAX 4096
+ 
+ #ifndef RRDCACHED_DEFAULT_ADDRESS
+-# define RRDCACHED_DEFAULT_ADDRESS "unix:/tmp/rrdcached.sock"
++# define RRDCACHED_DEFAULT_ADDRESS "unix:/var/lib/rrdcached/rrdcached.sock"
+ #endif
+ 
+ #define RRDCACHED_DEFAULT_PORT "42217"
