@@ -38,7 +38,7 @@ diff -Naurp rrdtool-1.5.5/examples/perftest.pl.in rrdtool-1.5.5.oden/examples/pe
  # Created By Tobi Oetiker <tobi@oetiker.ch>
  # Date 2006-10-27
  #
--#makes programm work AFTER install
+-#makes program work AFTER install
  
  my $Chunk = shift @ARGV || 10000;
  
@@ -57,7 +57,7 @@ diff -Naurp rrdtool-1.5.5/examples/piped-demo.pl.in rrdtool-1.5.5.oden/examples/
 -
  use RRDp;
  
- # this simpulates a standard mrtg-2.x setup ... we can use this to
+ # this simulates a standard mrtg-2.x setup ... we can use this to
 diff -Naurp rrdtool-1.5.5/examples/shared-demo.pl.in rrdtool-1.5.5.oden/examples/shared-demo.pl.in
 --- rrdtool-1.5.5/examples/shared-demo.pl.in	2015-11-10 17:06:16.000000000 +0100
 +++ rrdtool-1.5.5.oden/examples/shared-demo.pl.in	2015-11-16 09:28:53.307630828 +0100
@@ -65,7 +65,7 @@ diff -Naurp rrdtool-1.5.5/examples/shared-demo.pl.in rrdtool-1.5.5.oden/examples
      print "ok $ok_count $what\n";
  }
  
--#makes programm work AFTER install
+-#makes program work AFTER install
 -use lib qw( @prefix@/lib/perl );
 -
  use strict;
