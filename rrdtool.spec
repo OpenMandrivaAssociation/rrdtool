@@ -47,6 +47,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(python2)
 BuildRequires:	python2-setuptools
+BuildRequires:	systemd-macros
 Requires:	fonts-ttf-dejavu
 
 %description
@@ -156,7 +157,7 @@ autoreconf -fi
 export PYTHON=%{__python2}
 %configure \
 	--disable-static \
-	--with-systemdsystemunitdir="%{_systemunitdir}" \
+	--with-systemdsystemunitdir="%{_unitdir}" \
 	--with-perl-options="INSTALLDIRS=vendor" \
 	--enable-tcl-site \
 	--disable-ruby
