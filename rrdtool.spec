@@ -78,15 +78,7 @@ Group:		System/Libraries
 Obsoletes:	%{_lib}rrdtool4 < 1.4.8-7
 Obsoletes:	%{mklibname rrd_th 8} < 1.7.0-2
 
-%description -n	%{libname}
-This package contains a shared library for %{name}.
-
-%package -n %{libth}
-Summary:	RRDTool - round robin database shared libraries
-Group:		System/Libraries
-Conflicts:	%{_lib}rrdtool4 < 1.4.8-7
-
-%description -n	%{libth}
+%description -n %{libname}
 This package contains a shared library for %{name}.
 
 %package -n %{devname}
@@ -97,7 +89,7 @@ Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{_lib}rrdtool-devel < 1.4.8-7
 Conflicts:	%{_lib}rrdtool4 < 1.4.8-7
 
-%description -n	%{devname}
+%description -n %{devname}
 RRD is the Acronym for Round Robin Database. RRD is a system to store and
 display time-series data (i.e. network bandwidth, machine-room temperature,
 server load average).
@@ -109,7 +101,7 @@ Summary:	RRD Tool Perl interface
 Group:		Development/Perl
 Requires:	%{name} >= %{version}-%{release}
 
-%description -n	perl-%{name}
+%description -n perl-%{name}
 The RRD Tools Perl modules.
 
 %package -n python-%{name}
@@ -118,7 +110,7 @@ Group:		Development/Python
 Requires:	%{name} >= %{EVRD}
 Requires:	python >= 2.3
 
-%description -n	python-%{name}
+%description -n python-%{name}
 The RRD Tools Python modules.
 
 %package -n tcl-%{name}
@@ -127,7 +119,7 @@ Group:		Development/Other
 Requires:	%{name} >= %{EVRD}
 Requires:	tcl
 
-%description -n	tcl-%{name}
+%description -n tcl-%{name}
 The RRD Tools TCL modules.
 
 %package -n lua-%{name}
@@ -136,7 +128,7 @@ Group:		Development/Other
 Requires:	%{name} >= %{EVRD}
 Requires:	lua
 
-%description -n	lua-%{name}
+%description -n lua-%{name}
 The RRD Tools LUA module.
 
 %prep
@@ -227,6 +219,7 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_prefix}/lib/tmpfiles.d/rrdcached.con
 
 # cleanup
 rm -rf %{buildroot}%{_datadir}/rrdtool
+rm -rf %{buildroot}%{_docdir}/python-rrdtool
 
 # (tpg) systemd preset
 install -d %{buildroot}%{_presetdir}
@@ -273,7 +266,6 @@ EOF
 %{perl_vendorarch}/auto/RRDs/RRDs.so
 
 %files -n python-%{name}
-%doc bindings/python/AUTHORS bindings/python/COPYING bindings/python/README
 %py2_platsitedir/*
 
 %files -n tcl-%{name}
