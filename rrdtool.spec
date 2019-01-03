@@ -206,8 +206,8 @@ rm -f %{buildroot}%{perl_vendorarch}/ntmake.pl
 #chrpath -d %{buildroot}%{_bindir}/*
 
 # the problem has now moved to the perl stuff...
-find %{buildroot}%{_prefix}/lib/perl* -name "*.so" | xargs chmod u+w
-find %{buildroot}%{_prefix}/lib/perl* -name "*.so" | xargs chrpath -d
+find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chmod u+w
+find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chrpath -d
 
 # and the tcl stuff
 chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so
