@@ -264,7 +264,6 @@ EOF
 %{_libdir}/*.so
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/librrd.pc
-%{_mandir}/man3/librrd.3*
 
 %files -n perl-%{name}
 %doc installed_docs/pod installed_docs/examples
@@ -272,8 +271,6 @@ EOF
 %{perl_vendorlib}/*.pm
 %dir %{perl_vendorarch}/auto/RRDs
 %{perl_vendorarch}/auto/RRDs/RRDs.so
-%{_mandir}/man3*/RRDp.3*
-%{_mandir}/man3*/RRDs.3*
 
 %files -n python-%{name}
 %doc bindings/python/AUTHORS bindings/python/COPYING bindings/python/README
