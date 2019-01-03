@@ -1,6 +1,5 @@
 %define major 8
 %define libname %mklibname rrd %{major}
-%define libth %mklibname rrd_th %{major}
 %define devname %mklibname -d rrdtool
 %define _disable_rebuild_configure 1
 
@@ -77,6 +76,7 @@ these problems.
 Summary:	RRDTool - round robin database shared libraries
 Group:		System/Libraries
 Obsoletes:	%{_lib}rrdtool4 < 1.4.8-7
+Obsoletes:	%{mklibname rrd_th 8} < 1.7.0-2
 
 %description -n	%{libname}
 This package contains a shared library for %{name}.
@@ -92,9 +92,8 @@ This package contains a shared library for %{name}.
 %package -n %{devname}
 Summary:	Development libraries and headers for %{libname}
 Group:		Development/Other
-Requires:	%{libname} >= %{version}-%{release}
-Requires:	%{libth} >= %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} >= %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{_lib}rrdtool-devel < 1.4.8-7
 Conflicts:	%{_lib}rrdtool4 < 1.4.8-7
 
@@ -116,7 +115,7 @@ The RRD Tools Perl modules.
 %package -n python-%{name}
 Summary:	RRD Tool Python interface
 Group:		Development/Python
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} >= %{EVRD}
 Requires:	python >= 2.3
 
 %description -n	python-%{name}
@@ -125,7 +124,7 @@ The RRD Tools Python modules.
 %package -n tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} >= %{EVRD}
 Requires:	tcl
 
 %description -n	tcl-%{name}
@@ -134,7 +133,7 @@ The RRD Tools TCL modules.
 %package -n lua-%{name}
 Summary:	RRD Tool LUA interface
 Group:		Development/Other
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} >= %{EVRD}
 Requires:	lua
 
 %description -n	lua-%{name}
@@ -259,9 +258,6 @@ EOF
 
 %files -n %{libname}
 %{_libdir}/librrd.so.%{major}*
-
-%files -n %{libth}
-%{_libdir}/librrd_th.so.%{major}*
 
 %files -n %{devname}
 %exclude %{_libdir}/tclrrd%{version}.so
