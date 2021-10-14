@@ -6,7 +6,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.7.2
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
@@ -132,8 +132,7 @@ Requires:	lua
 The RRD Tools LUA module.
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 cp %{SOURCE1} .
 cp %{SOURCE2} .
@@ -276,4 +275,3 @@ EOF
 %files -n lua-%{name}
 %doc bindings/lua/README
 %{_libdir}/lua/*/rrd.so
-
