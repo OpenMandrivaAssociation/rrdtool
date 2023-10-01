@@ -143,11 +143,21 @@ cp %{SOURCE2} .
 %build
 autoreconf -fi
 
+# FIXME cross-compiling various bindings uses system headers causing
+# incorrect intrinsics to be emitted... So for now we just exclude
+# these bindings while crosscompiling
 %configure \
 	--disable-static \
 	--with-systemdsystemunitdir="%{_unitdir}" \
+%if %{cross_compiling}
+	--disable-tcl \
+	--disable-perl \
+	--disable-python \
+	--disable-lua \
+%else
 	--with-perl-options="INSTALLDIRS=vendor" \
 	--enable-tcl-site \
+%endif
 	--disable-ruby \
 	--disable-docs
 
@@ -156,10 +166,12 @@ autoreconf -fi
 %install
 %make_install
 
+%if ! %{cross_compiling}
 # equivalent of "make site-perl-install" except for the PREFIX
 # "make site-perl-install" is not done by "make install"
 %make_install -C bindings/perl-piped install_vendor
 %make_install -C bindings/perl-shared install_vendor
+%endif
 
 install -d %{buildroot}%{_sbindir}
 
@@ -191,14 +203,16 @@ rm -f %{buildroot}%{perl_vendorarch}/ntmake.pl
 # I've tried and tried and tried to get rid of the rpath.
 # It only appears after you do a make install, so I have
 # no idea what is doing it but this gets rid of it...
-#chrpath -d %{buildroot}%{_bindir}/*
+chrpath -d %{buildroot}%{_bindir}/*
 
+%if ! %{cross_compiling}
 # the problem has now moved to the perl stuff...
 find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chmod u+w
 find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chrpath -d
 
 # and the tcl stuff
 chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so
+%endif
 
 # remove .in/.am files
 find %{buildroot} -name "*.in" | xargs rm -f
@@ -252,10 +266,16 @@ EOF
 %{_libdir}/librrd.so.%{major}*
 
 %files -n %{devname}
+%if ! %{cross_compiling}
 %exclude %{_libdir}/tclrrd%{version}.so
+%endif
 %{_libdir}/*.so
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/librrd.pc
+
+%if ! %{cross_compiling}
+%files -n python-%{name}
+%py_platsitedir/*
 
 %files -n perl-%{name}
 %doc installed_docs/pod installed_docs/examples
@@ -266,9 +286,6 @@ EOF
 %{_mandir}/man3*/RRDp.3*
 %{_mandir}/man3*/RRDs.3*
 
-%files -n python-%{name}
-%py_platsitedir/*
-
 %files -n tcl-%{name}
 %doc bindings/tcl/README
 %{tcl_sitearch}/tclrrd
@@ -277,3 +294,4 @@ EOF
 %files -n lua-%{name}
 %doc bindings/lua/README
 %{_libdir}/lua/*/rrd.so
+%endif
