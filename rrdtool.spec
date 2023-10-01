@@ -1,16 +1,20 @@
 %define major 8
-%define libname %mklibname rrd %{major}
+%define libname %mklibname rrd
+%define oldlibname %mklibname rrd 8
 %define devname %mklibname -d rrdtool
 %define _disable_rebuild_configure 1
+# Allow undefined references to python in the python module,
+# those are not an error
+%define _disable_ld_no_undefined 1
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.7.2
-Release:	5
+Version:	1.8.0
+Release:	1
 License:	GPLv2+
 Group:		Networking/Other
 Url:		http://oss.oetiker.ch/rrdtool/
-Source0:	http://oss.oetiker.ch/rrdtool/pub/%{name}-%{version}.tar.gz
+Source0:	https://github.com/oetiker/rrdtool-1.x/releases/download/v%{version}/rrdtool-%{version}.tar.gz
 Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
 Source3:	rrdcached.tmpfiles
@@ -40,12 +44,11 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(lua)
 BuildRequires:	pkgconfig(pango) >= 1.28.4
 BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	pkgconfig(python2)
-BuildRequires:	python2-setuptools
+BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	systemd-macros
 Requires:	fonts-ttf-dejavu
 
@@ -77,6 +80,7 @@ Summary:	RRDTool - round robin database shared libraries
 Group:		System/Libraries
 Obsoletes:	%{_lib}rrdtool4 < 1.4.8-7
 Obsoletes:	%{mklibname rrd_th 8} < 1.7.0-2
+%rename %{oldlibname}
 
 %description -n %{libname}
 This package contains a shared library for %{name}.
@@ -108,7 +112,6 @@ The RRD Tools Perl modules.
 Summary:	RRD Tool Python interface
 Group:		Development/Python
 Requires:	%{name} >= %{EVRD}
-Requires:	python >= 2.3
 
 %description -n python-%{name}
 The RRD Tools Python modules.
@@ -140,7 +143,6 @@ cp %{SOURCE2} .
 %build
 autoreconf -fi
 
-export PYTHON=%{__python2}
 %configure \
 	--disable-static \
 	--with-systemdsystemunitdir="%{_unitdir}" \
@@ -265,7 +267,7 @@ EOF
 %{_mandir}/man3*/RRDs.3*
 
 %files -n python-%{name}
-%py2_platsitedir/*
+%py_platsitedir/*
 
 %files -n tcl-%{name}
 %doc bindings/tcl/README
