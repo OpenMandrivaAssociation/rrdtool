@@ -13,7 +13,7 @@ Version:	1.9.0
 Release:	1
 License:	GPLv2+
 Group:		Networking/Other
-Url:		http://oss.oetiker.ch/rrdtool/
+Url:		https://oss.oetiker.ch/rrdtool/
 Source0:	https://github.com/oetiker/rrdtool-1.x/releases/download/v%{version}/rrdtool-%{version}.tar.gz
 Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
