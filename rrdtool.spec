@@ -32,6 +32,7 @@ BuildRequires:	gettext
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libtool
+BuildRequires:	slibtool
 BuildRequires:	gd-devel
 BuildRequires:	gettext-devel
 BuildRequires:	perl-devel
