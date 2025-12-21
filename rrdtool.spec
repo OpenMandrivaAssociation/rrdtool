@@ -26,6 +26,9 @@ Patch2:         rrdtool-1.4.1-avoid-version.diff
 Patch5:         rrdtool-1.4.8-tcl_location.diff
 Patch6:         rrdtool-1.6.0-ruby-2-fix.patch
 Patch9:         rrdtool-1.5.5-socket_dir.diff
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
 BuildRequires:	make
 BuildRequires:	chrpath
 BuildRequires:	dbi-devel
