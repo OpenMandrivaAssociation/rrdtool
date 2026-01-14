@@ -36,7 +36,6 @@ BuildRequires:	gettext
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libtool
-BuildRequires:	slibtool
 BuildRequires:	gd-devel
 BuildRequires:	gettext-devel
 BuildRequires:	perl-devel
@@ -146,6 +145,9 @@ cp %{SOURCE1} .
 cp %{SOURCE2} .
 
 %build
+# FIXME find out why slibtool doesn't work here (complains about
+# being unable to open the input file 'Makefile') during configure
+export LIBTOOLIZE=libtoolize
 autoreconf -fi
 
 # FIXME cross-compiling various bindings uses system headers causing
