@@ -10,7 +10,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.9.0
-Release:8
+Release:9
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -120,6 +120,7 @@ Requires:	%{name} >= %{EVRD}
 %description -n python-%{name}
 The RRD Tools Python modules.
 
+%if 0
 %package -n tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
@@ -128,6 +129,7 @@ Requires:	tcl
 
 %description -n tcl-%{name}
 The RRD Tools TCL modules.
+%endif
 
 %package -n lua-%{name}
 Summary:	RRD Tool LUA interface
@@ -308,3 +310,4 @@ EOF
 %files -n lua-%{name}
 %doc bindings/lua/README
 %{_libdir}/lua/*/rrd.so
+%endif
