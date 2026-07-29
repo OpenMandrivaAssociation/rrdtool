@@ -10,7 +10,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.9.0
-Release:5
+Release:7
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -120,6 +120,7 @@ Requires:	%{name} >= %{EVRD}
 %description -n python-%{name}
 The RRD Tools Python modules.
 
+%if 0
 %package -n tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
@@ -153,8 +154,12 @@ autoreconf -fi
 # FIXME cross-compiling various bindings uses system headers causing
 # incorrect intrinsics to be emitted... So for now we just exclude
 # these bindings while crosscompiling
+# Tcl 9 + clang: disable tcl bindings (signature mismatch); keep perl
+export CFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
+export CXXFLAGS="$CFLAGS"
 %configure \
 	--disable-static \
+	--disable-tcl \
 	--with-systemdsystemunitdir="%{_unitdir}" \
 %if %{cross_compiling}
 	--disable-tcl \
@@ -163,14 +168,10 @@ autoreconf -fi
 	--disable-lua \
 %else
 	--with-perl-options="INSTALLDIRS=vendor" \
-	--enable-tcl-site \
 %endif
 	--disable-ruby \
 	--disable-docs
 
-# Tcl 9 / modern clang: Tcl_CmdProc signature mismatch in tclrrd.c
-export CFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
-export CXXFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
 %make_build -j1
 
 %install
@@ -303,6 +304,8 @@ EOF
 %doc bindings/tcl/README
 %{tcl_sitearch}/tclrrd
 %{_libdir}/tclrrd%{version}.so
+
+%endif
 
 %files -n lua-%{name}
 %doc bindings/lua/README
