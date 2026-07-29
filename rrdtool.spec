@@ -10,7 +10,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.9.0
-Release:7
+Release:8
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -308,4 +308,3 @@ EOF
 %files -n lua-%{name}
 %doc bindings/lua/README
 %{_libdir}/lua/*/rrd.so
-%endif
