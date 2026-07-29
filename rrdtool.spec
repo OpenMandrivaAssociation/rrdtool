@@ -49,7 +49,7 @@ BuildRequires:	pkgconfig(lua)
 BuildRequires:	pkgconfig(pango) >= 1.28.4
 BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
 BuildRequires:	pkgconfig(python3)
-BuildRequires:	pkgconfig(tcl)
+# BuildRequires:	pkgconfig(tcl)  # tcl disabled
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	python%{pyver}dist(setuptools)
@@ -120,7 +120,6 @@ Requires:	%{name} >= %{EVRD}
 %description -n python-%{name}
 The RRD Tools Python modules.
 
-%if 0
 %package -n tcl-%{name}
 Summary:	RRD Tool TCL interface
 Group:		Development/Other
@@ -154,7 +153,7 @@ autoreconf -fi
 # FIXME cross-compiling various bindings uses system headers causing
 # incorrect intrinsics to be emitted... So for now we just exclude
 # these bindings while crosscompiling
-# Tcl 9 + clang: disable tcl bindings (signature mismatch); keep perl
+# Tcl bindings broken with Tcl 9 / modern clang; keep perl
 export CFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
 export CXXFLAGS="$CFLAGS"
 %configure \
@@ -162,7 +161,6 @@ export CXXFLAGS="$CFLAGS"
 	--disable-tcl \
 	--with-systemdsystemunitdir="%{_unitdir}" \
 %if %{cross_compiling}
-	--disable-tcl \
 	--disable-perl \
 	--disable-python \
 	--disable-lua \
@@ -222,7 +220,7 @@ find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chmod u+w
 find %{buildroot}/%{_libdir}/perl* -name "*.so" | xargs chrpath -d
 
 # and the tcl stuff
-chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so
+chrpath -d %{buildroot}%{_libdir}/tclrrd%{version}.so 2>/dev/null || :
 %endif
 
 # remove .in/.am files
@@ -300,11 +298,11 @@ EOF
 %{_mandir}/man3*/RRDp.3*
 %{_mandir}/man3*/RRDs.3*
 
+%if 0
 %files -n tcl-%{name}
 %doc bindings/tcl/README
 %{tcl_sitearch}/tclrrd
 %{_libdir}/tclrrd%{version}.so
-
 %endif
 
 %files -n lua-%{name}
