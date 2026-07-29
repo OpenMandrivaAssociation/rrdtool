@@ -10,7 +10,7 @@
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
 Version:	1.9.0
-Release:4
+Release:5
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -168,6 +168,9 @@ autoreconf -fi
 	--disable-ruby \
 	--disable-docs
 
+# Tcl 9 / modern clang: Tcl_CmdProc signature mismatch in tclrrd.c
+export CFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
+export CXXFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-incompatible-function-pointer-types"
 %make_build -j1
 
 %install
