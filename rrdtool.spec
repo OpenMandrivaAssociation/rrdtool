@@ -9,8 +9,8 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.9.0
-Release:9
+Version:	1.10.3
+Release:1
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -19,12 +19,12 @@ Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
 Source3:	rrdcached.tmpfiles
 Source100:	rrdtool.rpmlintrc
-Patch1:         rrdtool-1.2.23-fix-examples.patch
+# dropped (no longer applies): Patch1:         rrdtool-1.2.23-fix-examples.patch
 Patch2:         rrdtool-1.4.1-avoid-version.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch5:         rrdtool-1.4.8-tcl_location.diff
-Patch6:         rrdtool-1.6.0-ruby-2-fix.patch
+# dropped (no longer applies): Patch6:         rrdtool-1.6.0-ruby-2-fix.patch
 Patch9:         rrdtool-1.5.5-socket_dir.diff
 BuildRequires:	autoconf
 BuildRequires:	automake
