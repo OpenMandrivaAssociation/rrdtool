@@ -24,16 +24,17 @@ Patch2:		rrdtool-1.4.1-avoid-version.diff
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
 Patch5:		rrdtool-1.4.8-tcl_location.diff
 Patch9:		rrdtool-1.5.5-socket_dir.diff
+# AC_OUTPUT in the middle of configure.ac races slibtool's slibtool.cfg:Makefile
+Patch10:	rrdtool-1.11.0-no-early-ac-output.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	make
 BuildRequires:	chrpath
 BuildRequires:	gettext
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
-BuildRequires:	libtool
 BuildRequires:	gettext-devel
+BuildRequires:	slibtool
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(dbi)
@@ -142,9 +143,7 @@ cp %{SOURCE1} .
 cp %{SOURCE2} .
 
 %build
-# FIXME find out why slibtool doesn't work here (complains about
-# being unable to open the input file 'Makefile') during configure
-export LIBTOOLIZE=libtoolize
+export LIBTOOLIZE=slibtoolize
 autoreconf -fi
 
 # FIXME cross-compiling various bindings uses system headers causing
