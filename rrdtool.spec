@@ -9,8 +9,8 @@
 
 Summary:	Round Robin Database Tool to store and display time-series data
 Name:		rrdtool
-Version:	1.10.3
-Release:1
+Version:	1.11.0
+Release:	1
 License:	GPLv2+
 Group:		Networking/Other
 Url:		https://oss.oetiker.ch/rrdtool/
@@ -19,41 +19,38 @@ Source1:	rrdcached.service
 Source2:	rrdcached.sysconfig
 Source3:	rrdcached.tmpfiles
 Source100:	rrdtool.rpmlintrc
-# dropped (no longer applies): Patch1:         rrdtool-1.2.23-fix-examples.patch
-Patch2:         rrdtool-1.4.1-avoid-version.diff
+Patch2:		rrdtool-1.4.1-avoid-version.diff
 # Install tcl bindings to correct location as per policy (the upstream
 # conditional that should nearly do this doesn't work) - AdamW 2008/12
-Patch5:         rrdtool-1.4.8-tcl_location.diff
-# dropped (no longer applies): Patch6:         rrdtool-1.6.0-ruby-2-fix.patch
-Patch9:         rrdtool-1.5.5-socket_dir.diff
+Patch5:		rrdtool-1.4.8-tcl_location.diff
+Patch9:		rrdtool-1.5.5-socket_dir.diff
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool-base
 BuildRequires:	make
 BuildRequires:	chrpath
-BuildRequires:	dbi-devel
 BuildRequires:	gettext
 BuildRequires:	groff
 BuildRequires:	intltool >= 0.35.0
 BuildRequires:	libtool
-BuildRequires:	gd-devel
 BuildRequires:	gettext-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(cairo)
+BuildRequires:	pkgconfig(dbi)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(freetype2) >= 2.4.6
 BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(libart-2.0)
 BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(lua)
 BuildRequires:	pkgconfig(pango) >= 1.28.4
-BuildRequires:	pkgconfig(pangocairo)  >= 1.28.4
+BuildRequires:	pkgconfig(pangocairo) >= 1.28.4
 BuildRequires:	pkgconfig(python3)
 # BuildRequires:	pkgconfig(tcl)  # tcl disabled
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
-BuildRequires:	systemd-macros
+BuildRequires:	python%{pyver}dist(wheel)
 Requires:	fonts-ttf-dejavu
 
 %description
@@ -68,9 +65,7 @@ put a friendly user interface on it.
 %package -n rrdcached
 Summary:	Data caching daemon for RRDtool
 Group:		System/Servers
-BuildRequires:	rpm-helper
-Requires(post,preun,pre,postun):	rpm-helper
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} = %{EVRD}
 
 %description -n	rrdcached
 rrdcached is a daemon that receives updates to existing RRD files, accumulates
@@ -107,7 +102,7 @@ This package provides development libraries and headers for %{libname}.
 %package -n perl-%{name}
 Summary:	RRD Tool Perl interface
 Group:		Development/Perl
-Requires:	%{name} >= %{version}-%{release}
+Requires:	%{name} = %{EVRD}
 
 %description -n perl-%{name}
 The RRD Tools Perl modules.
@@ -115,7 +110,7 @@ The RRD Tools Perl modules.
 %package -n python-%{name}
 Summary:	RRD Tool Python interface
 Group:		Development/Python
-Requires:	%{name} >= %{EVRD}
+Requires:	%{name} = %{EVRD}
 
 %description -n python-%{name}
 The RRD Tools Python modules.
@@ -134,7 +129,7 @@ The RRD Tools TCL modules.
 %package -n lua-%{name}
 Summary:	RRD Tool LUA interface
 Group:		Development/Other
-Requires:	%{name} >= %{EVRD}
+Requires:	%{name} = %{EVRD}
 Requires:	lua
 
 %description -n lua-%{name}
@@ -160,6 +155,7 @@ export CFLAGS="%{optflags} -Wno-error=incompatible-function-pointer-types -Wno-i
 export CXXFLAGS="$CFLAGS"
 %configure \
 	--disable-static \
+	--disable-rpath \
 	--disable-tcl \
 	--with-systemdsystemunitdir="%{_unitdir}" \
 %if %{cross_compiling}
@@ -243,6 +239,15 @@ install -D -m 644 %{SOURCE3} %{buildroot}%{_prefix}/lib/tmpfiles.d/rrdcached.con
 rm -rf %{buildroot}%{_datadir}/rrdtool
 rm -rf %{buildroot}%{_docdir}/python-rrdtool
 
+%if ! %{cross_compiling}
+# 1.10+ pip-installs the python wheel to %{_libdir}/python3/site-packages
+if [ -d %{buildroot}%{_libdir}/python3/site-packages ]; then
+	mkdir -p %{buildroot}%{py_platsitedir}
+	cp -a %{buildroot}%{_libdir}/python3/site-packages/. %{buildroot}%{py_platsitedir}/
+	rm -rf %{buildroot}%{_libdir}/python3
+fi
+%endif
+
 # (tpg) systemd preset
 install -d %{buildroot}%{_presetdir}
 cat > %{buildroot}%{_presetdir}/86-rrdcached.preset << EOF
@@ -280,9 +285,6 @@ EOF
 %{_libdir}/librrd.so.%{major}*
 
 %files -n %{devname}
-%if ! %{cross_compiling}
-%exclude %{_libdir}/tclrrd%{version}.so
-%endif
 %{_libdir}/*.so
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/librrd.pc
